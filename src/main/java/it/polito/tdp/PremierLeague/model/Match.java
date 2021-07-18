@@ -2,7 +2,7 @@ package it.polito.tdp.PremierLeague.model;
 
 import java.time.LocalDateTime;
 
-public class Match {
+public class Match  implements Comparable<Match>{
 	Integer matchID;
 	Integer teamHomeID;
 	Integer teamAwayID;
@@ -14,6 +14,8 @@ public class Match {
 	String teamAwayNAME;
 
 	LocalDateTime date;
+	
+	Integer numReporter;
 	
 	public Match(Integer matchID, Integer teamHomeID, Integer teamAwayID, Integer teamHomeFormation,
 			Integer teamAwayFormation, Integer resultOfTeamHome, LocalDateTime date, String teamHomeNAME, String teamAwayNAME) {
@@ -29,6 +31,14 @@ public class Match {
 		this.date = date;
 	}
 	
+	public Integer getNumReporter() {
+		return numReporter;
+	}
+
+	public void setNumReporter(Integer numReporter) {
+		this.numReporter = numReporter;
+	}
+
 	public Integer getMatchID() {
 		return matchID;
 	}
@@ -125,5 +135,13 @@ public class Match {
 			return false;
 		return true;
 	}
+
+	@Override
+	public int compareTo(Match o) {
+		return this.date.compareTo(o.date);
+	}
+	
+	
+	
 	
 }

@@ -5,9 +5,11 @@
 package it.polito.tdp.PremierLeague;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.PremierLeague.model.Model;
+import it.polito.tdp.PremierLeague.model.Team;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -35,7 +37,7 @@ public class FXMLController {
     private Button btnSimula; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbSquadra"
-    private ComboBox<?> cmbSquadra; // Value injected by FXMLLoader
+    private ComboBox<Team> cmbSquadra; // Value injected by FXMLLoader
 
     @FXML // fx:id="txtN"
     private TextField txtN; // Value injected by FXMLLoader
@@ -48,16 +50,45 @@ public class FXMLController {
 
     @FXML
     void doClassifica(ActionEvent event) {
+    	txtResult.clear();
+    	if(model.getGrafo() == null) {
+    		txtResult.setText("DEVI PRIMA CREARE IL GRAFO!!!");
+    		return;
+    	}
+    	if(cmbSquadra.getValue() == null) {
+    		txtResult.setText("DEVI SELEZIONARE UNA SQUADRA!!!");
+    		return;
+    	}
+    	Team squadra = model.getTeam(cmbSquadra.getValue().getTeamID());
+    	List<Team> migliori = model.getSquadreMigliori(squadra);
+    	List<Team> peggiori = model.getSquadrePeggiori(squadra);
+    	
+    	txtResult.appendText("\nSQUADRE MIGLIORI");
+    	for(Team s : migliori) {
+			txtResult.appendText("\n"+s.getName() + " ("+ (s.getPunti()-squadra.getPunti())+")");
+		}
+    	
+    	txtResult.appendText("\nSQUADRE PEGGIORI");
+		for(Team s : peggiori) {
+			txtResult.appendText("\n"+s.getName() + " ("+ (squadra.getPunti()-s.getPunti())+")");
+		}
+
 
     }
 
     @FXML
     void doCreaGrafo(ActionEvent event) {
-
+    	txtResult.clear();
+    	model.creGrafo();
+    	txtResult.appendText("GRAFO CREATO\n");
+    	txtResult.appendText(model.nVertici() + " VERTICI\n");
+    	txtResult.appendText(model.nArchi() + " ARCHI\n");
     }
 
     @FXML
     void doSimula(ActionEvent event) {
+    	
+    	
 
     }
 
@@ -74,5 +105,6 @@ public class FXMLController {
     
     public void setModel(Model model) {
     	this.model = model;
+    	this.cmbSquadra.getItems().addAll(model.getAllTeams());
     }
 }
