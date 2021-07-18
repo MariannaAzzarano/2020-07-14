@@ -88,6 +88,17 @@ public class FXMLController {
     @FXML
     void doSimula(ActionEvent event) {
     	
+    	txtResult.clear();
+    	Integer N = Integer.parseInt(txtN.getText());
+    	Integer X = Integer.parseInt(txtX.getText());
+    	if(N != null && X != null) {
+    		this.model.simula(N, X);
+    		txtResult.appendText("MEDIA REPORTER PER PARTITA: " + model.getMediaReporter());
+    		txtResult.appendText("\nPARTITE SOTTO LA SOGLIA: " + model.getSottoSoglia());
+    	}
+    	else {
+    		txtResult.setText("Devi inserire entrambi i parametri!!!!");
+    	}
     	
 
     }
